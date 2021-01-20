@@ -17,8 +17,5 @@ export async function openConnection() {
     entities: [User, Todo],
     synchronize: true,
     logging: false,
-  }).catch((error) => {
-    console.error(`Couldn't connect to the database!`);
-    console.error(error);
   });
 }

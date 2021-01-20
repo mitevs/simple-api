@@ -5,6 +5,7 @@ import { Container } from "typedi";
 import { openConnection } from "./persistence";
 import controllers from "./controllers";
 import { attachGraphql } from "./graphql";
+import { authorizationChecker, currentUserChecker } from "./security";
 
 useContainer(Container);
 
@@ -13,8 +14,11 @@ async function init() {
     const connection = await openConnection();
 
     const app = createKoaServer({
+      cors: true,
       controllers,
       routePrefix: "/api",
+      authorizationChecker,
+      currentUserChecker,
     });
 
     await attachGraphql(app);
@@ -27,6 +31,7 @@ async function init() {
       gracefullyShutdown(app, connection);
     });
   } catch (err) {
+    console.log("ERROR: ", err);
     console.log("Could not open db connection");
   }
 }

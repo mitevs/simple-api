@@ -30,8 +30,14 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  getUserByUsernameAndPassword(username: string, rawPassword: string) {
+  async getUserByUsernameAndPassword(username: string, rawPassword: string) {
     const password = PasswordUtils.hashPasword(rawPassword);
-    return this.userRepository.findOne({ username, password });
+    const user = await this.userRepository.findOne({ username, password });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user;
   }
 }
