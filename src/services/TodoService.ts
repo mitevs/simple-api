@@ -14,6 +14,14 @@ export class TodoService {
     return this.todoRepository.save(todo);
   }
 
+  updateTodo(id: number, todo: Todo) {
+    return this.todoRepository.update(id, todo);
+  }
+
+  deleteTodo(id: number) {
+    return this.todoRepository.delete({ id });
+  }
+
   getTodos(userId: number) {
     return this.todoRepository.find({ where: { userId } });
   }

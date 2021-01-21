@@ -1,13 +1,13 @@
 import { User } from "./User";
 import { Entity, Column, ManyToOne } from "typeorm";
-import { IsEmail, IsEmpty, IsNotEmpty } from "class-validator";
-import { Field, ID, ObjectType } from "type-graphql";
+import { IsNotEmpty } from "class-validator";
+import { Field, ObjectType } from "type-graphql";
 import { Base } from "./Base";
 
 @ObjectType()
 @Entity()
 export class Todo extends Base {
-  @Field((type) => ID)
+  @Field()
   @IsNotEmpty()
   @Column({ length: 500, nullable: false })
   text!: string;
