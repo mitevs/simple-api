@@ -10,9 +10,10 @@ This is the api part for the simple platform. It runs on node and mysql as the c
 
 # How to run
 
+0. Copy over the `.env.example` to `.env` so that the DB config is used for local
 1. Execute `yarn up` to create the required docker conatiners for the db.
    1.1 There's also phpmyadmin for easier development and debugging at [localhost:9001](http://localhost:9001).
-2. Execute `yarn start` to start the node server. The api is prefixed with `/api`, you you can try executing this command to get some response `curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3000/api/users`, or maybe use your REST client of choice, like postman or insomnia.
+2. Execute `yarn start` to start the node server. The api is prefixed with `/api`, you you can try executing this command to get some response `curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3001/api/users`, or maybe use your REST client of choice, like postman or insomnia.
 3. To stop the running containers execute `yarn down`
 
 # Tests
@@ -41,9 +42,20 @@ This is the HTTP transport layer that exposes the business logic from the servic
 
 Additionally the data an be read using graphql. Execute queries on [localhost:3000/graphql] using the graphql playground. This is an example query. It gets a user by `username` and `password` and at the same time loads his todos.
 
+1. You will need to get a JWT token before you can start working with the queries. Do this on the `POST /api/token` route, passing `{ username, password }`.
+2. In the Playground you can add headers at the bottom of the screen. Define JSON with the following format:
+
 ```js
 {
-  getUser(username: "stefo", password: "enternow") {
+  "authorization": "Bearer [YOUR TOKEN]"
+}
+```
+
+3. Execute the query
+
+```js
+{
+  me {
   	username
     firstName
     lastName

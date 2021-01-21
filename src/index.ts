@@ -1,4 +1,5 @@
 import "reflect-metadata";
+require("dotenv").config();
 import { createKoaServer, useContainer } from "routing-controllers";
 import { Connection } from "typeorm";
 import { Container } from "typedi";
@@ -9,6 +10,8 @@ import { attachGraphql } from "./graphql";
 import { authorizationChecker, currentUserChecker } from "./security";
 
 useContainer(Container);
+
+const port = process.env.PORT || 3001;
 
 async function init() {
   try {
@@ -26,8 +29,8 @@ async function init() {
 
     await attachGraphql(app);
 
-    app.listen(3000, () => {
-      console.log("running on port 3000");
+    app.listen(port, () => {
+      console.log(`API running on port ${port} 🚀`);
     });
 
     process.on("SIGTERM", () => {
