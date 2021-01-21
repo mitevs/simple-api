@@ -4,6 +4,7 @@ import { Connection } from "typeorm";
 import { Container } from "typedi";
 import { openConnection } from "./persistence";
 import controllers from "./controllers";
+import middlewares from "./middlewares";
 import { attachGraphql } from "./graphql";
 import { authorizationChecker, currentUserChecker } from "./security";
 
@@ -16,7 +17,9 @@ async function init() {
     const app = createKoaServer({
       cors: true,
       controllers,
+      middlewares,
       routePrefix: "/api",
+      defaultErrorHandler: false,
       authorizationChecker,
       currentUserChecker,
     });
